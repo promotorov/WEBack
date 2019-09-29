@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName
       }, process.env.JWT_KEY, { expiresIn: '1h' })
-      res.status(200).json({ token })
+      res.status(200).cookie('token', token, { httpOnly: true} ).json()
     }
     else
       res.status(422).json({ error })
