@@ -1,7 +1,13 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+const express = require('express')
+const app = express()
+const userRouter = require('./routers/user')
+const connectDb = require('./models/index')
+require('dotenv').config()
 
+app.use(express.json())
 app.get('/', (req, res) => res.send('Hello world!'))
+app.use('/api/users', userRouter)
 
-app.listen(port, () => console.log(`Listening on port ${port}`))
+connectDb().then(() => {
+  app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`))
+})
