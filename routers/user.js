@@ -51,13 +51,17 @@ router.get('/:id', async (req, res) => {
 })
 
 // update user
-router.put('/', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
-    const user = await User.findOneAndUpdate({ _id: req.params.id })
-    if (user)
-      res.status(204).json()
-    else
-      res.status(404).json({ error: 'No user with such id' })
+    if (!!(await User.findOne({ email: req.body.email })))
+      res.status(409).json({ error: 'There is a user with such email' })
+    else {
+      const user = await User.findOneAndUpdate({_id: req.params.id}, req.body)
+      if (user)
+        res.status(204).json()
+      else
+        res.status(404).json({error: 'No user with such id'})
+    }
   }
   catch (error) {
     console.log(error)
