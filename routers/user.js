@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcrypt')
 const User = require('../models/user')
 const internalError = require('./common')
 const router = express.Router()
@@ -7,7 +8,9 @@ const router = express.Router()
 router.post('/', async (req, res) => {
   try {
     if(!(await User.findOne({ email: req.body.email }))) {
-      await User.create(req.body)
+      const hash = await bcrypt.hash(req.body.password, 10)
+      const user = { ...req.body, password: hash }
+      await User.create(user)
       res.status(201).json()
     }
     else
