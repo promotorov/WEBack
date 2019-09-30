@@ -39,7 +39,7 @@ router.get('/', withAuth, (req, res) => {
 })
 
 // logout
-router.delete('/', withAuth, (req, res) => {
+router.delete('/', (req, res) => {
   res.status(204).clearCookie('token').json()
 })
 
