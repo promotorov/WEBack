@@ -4,7 +4,7 @@ const internalError = require('./common')
 const router = express.Router()
 
 const axiosConfig = axios.create({
-  baseURL: 'https://api.themoviedb.org/3/movie',
+  baseURL: 'https://api.themoviedb.org/3/',
   timeout: 5000,
   params: {
     api_key: process.env.TMDB_KEY,
@@ -25,13 +25,13 @@ router.get('/', async (req, res) => {
     }
 
     if (!filter) {
-      requests.push(axiosConfig.get('/now_playing'))
-      requests.push(axiosConfig.get('/upcoming'))
+      requests.push(axiosConfig.get('movie/now_playing'))
+      requests.push(axiosConfig.get('movie/upcoming'))
     }
     else if (filter === filterTypes.playing)
-      requests.push(axiosConfig.get('/now_playing'))
+      requests.push(axiosConfig.get('movie/now_playing'))
     else if (filter === filterTypes.upcoming)
-      requests.push(axiosConfig.get('/upcoming'))
+      requests.push(axiosConfig.get('movie/upcoming'))
     else {
       res.status(404).json({error: 'No movies with such filter'})
       return
@@ -62,6 +62,19 @@ router.get('/', async (req, res) => {
       res.status(200).json({
         [filter]: data[0]
       })
+  }
+  catch (error) {
+    console.log(error)
+    res.status(503).json(internalError)
+  }
+})
+
+router.get('/genres', async (req, res) => {
+  try {
+    const response = await axiosConfig.get('genre/movie/list')
+
+    if (response.status === 200)
+      res.status(200).json(response.data)
   }
   catch (error) {
     console.log(error)
