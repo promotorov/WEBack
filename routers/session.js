@@ -2,6 +2,7 @@ const express = require('express')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const withAuth = require('../middlewares/withAuth')
 const internalError = require('./common')
 const router = express.Router()
 
@@ -30,6 +31,11 @@ router.post('/', async (req, res) => {
     console.log(error)
     res.status(503).json(internalError)
   }
+})
+
+// check session
+router.get('/', withAuth, (req, res) => {
+  res.status(200).json()
 })
 
 module.exports = router
