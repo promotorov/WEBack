@@ -38,4 +38,9 @@ router.get('/', withAuth, (req, res) => {
   res.status(200).json()
 })
 
+// logout
+router.delete('/', withAuth, (req, res) => {
+  res.status(204).clearCookie('token').json()
+})
+
 module.exports = router
