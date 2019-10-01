@@ -41,8 +41,9 @@ router.get('/', async (req, res) => {
 
     const data = responses.map(r => {
       return r.data.results.map(movie => {
-        const { title, overview, release_date, vote_average, poster_path, genre_ids } = movie
+        const { title, overview, release_date, vote_average, poster_path, genre_ids, id } = movie
         return {
+          id,
           title,
           overview,
           release_date,
