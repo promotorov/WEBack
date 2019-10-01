@@ -7,6 +7,7 @@ const userRouter = require('./routers/user')
 const sessionRouter = require('./routers/session')
 const movieRouter = require('./routers/movie')
 const profileRouter = require('./routers/profile')
+const eventRouter = require('./routers/event')
 const connectDb = require('./models/index')
 const withAuth = require('./middlewares/withAuth')
 
@@ -18,6 +19,7 @@ app.use('/api/users', userRouter)
 app.use('/api/session', sessionRouter)
 app.use('/api/movies', movieRouter)
 app.use('/api/profile', withAuth, profileRouter)
+app.use('/api/events', eventRouter)
 
 connectDb().then(() => {
   app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`))
